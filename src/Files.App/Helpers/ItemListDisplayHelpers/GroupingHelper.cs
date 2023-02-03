@@ -68,11 +68,6 @@ namespace Files.App.Helpers
 						x.Model.Text = vals.range;
 						x.Model.SortIndexOverride = vals.index;
 					}
-					else
-					{
-						// Show file sections below folders when the sort direction is descending
-						x.Model.SortIndexOverride = sizeGroups.Length + 1;
-					}
 				}, null),
 				GroupOption.DateCreated => (x =>
 				{
