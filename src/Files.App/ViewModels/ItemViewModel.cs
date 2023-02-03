@@ -733,7 +733,14 @@ namespace Files.App.ViewModels
 
 			if (!FilesAndFolders.GroupedCollection.IsSorted)
 			{
-				FilesAndFolders.GroupedCollection.Order(x => x.OrderBy(y => y.Model.SortIndexOverride).ThenBy(y => y.Model.Text));
+				if (folderSettings.DirectorySortDirection == SortDirection.Ascending)
+				{
+					FilesAndFolders.GroupedCollection.Order(x => x.OrderBy(y => y.Model.SortIndexOverride).ThenBy(y => y.Model.Text));
+				}
+				else
+				{
+					FilesAndFolders.GroupedCollection.Order(x => x.OrderByDescending(y => y.Model.SortIndexOverride).ThenByDescending(y => y.Model.Text));
+				}
 				FilesAndFolders.GroupedCollection.IsSorted = true;
 			}
 		}
