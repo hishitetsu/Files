@@ -731,34 +731,33 @@ namespace Files.App.ViewModels
 				gp.Order(list => SortingHelper.OrderFileList(list, folderSettings.DirectorySortOption, folderSettings.DirectorySortDirection, folderSettings.SortDirectoriesAlongsideFiles));
 			}
 
-			if (!FilesAndFolders.GroupedCollection.IsSorted)
+			if (FilesAndFolders.GroupedCollection is null || FilesAndFolders.GroupedCollection.IsSorted)
+				return;
+			if (folderSettings.DirectorySortDirection == SortDirection.Ascending)
 			{
-				if (folderSettings.DirectorySortDirection == SortDirection.Ascending)
+				if (folderSettings.DirectoryGroupOption == GroupOption.Size)
 				{
-					if (folderSettings.DirectoryGroupOption == GroupOption.Size)
-					{
-						// Always show file sections below folders
-						FilesAndFolders.GroupedCollection.Order(x => x.OrderBy(y => y.First().PrimaryItemAttribute != StorageItemTypes.Folder).ThenBy(y => y.Model.SortIndexOverride).ThenBy(y => y.Model.Text));
-					}
-					else
-					{
-						FilesAndFolders.GroupedCollection.Order(x => x.OrderBy(y => y.Model.SortIndexOverride).ThenBy(y => y.Model.Text));
-					}
+					// Always show file sections below folders
+					FilesAndFolders.GroupedCollection.Order(x => x.OrderBy(y => y.First().PrimaryItemAttribute != StorageItemTypes.Folder).ThenBy(y => y.Model.SortIndexOverride).ThenBy(y => y.Model.Text));
 				}
 				else
 				{
-					if (folderSettings.DirectoryGroupOption == GroupOption.Size)
-					{
-						// Always show file sections below folders
-						FilesAndFolders.GroupedCollection.Order(x => x.OrderBy(y => y.First().PrimaryItemAttribute != StorageItemTypes.Folder).ThenByDescending(y => y.Model.SortIndexOverride).ThenByDescending(y => y.Model.Text));
-					}
-					else
-					{
-						FilesAndFolders.GroupedCollection.Order(x => x.OrderByDescending(y => y.Model.SortIndexOverride).ThenByDescending(y => y.Model.Text));
-					}
+					FilesAndFolders.GroupedCollection.Order(x => x.OrderBy(y => y.Model.SortIndexOverride).ThenBy(y => y.Model.Text));
 				}
-				FilesAndFolders.GroupedCollection.IsSorted = true;
 			}
+			else
+			{
+				if (folderSettings.DirectoryGroupOption == GroupOption.Size)
+				{
+					// Always show file sections below folders
+					FilesAndFolders.GroupedCollection.Order(x => x.OrderBy(y => y.First().PrimaryItemAttribute != StorageItemTypes.Folder).ThenByDescending(y => y.Model.SortIndexOverride).ThenByDescending(y => y.Model.Text));
+				}
+				else
+				{
+					FilesAndFolders.GroupedCollection.Order(x => x.OrderByDescending(y => y.Model.SortIndexOverride).ThenByDescending(y => y.Model.Text));
+				}
+			}
+			FilesAndFolders.GroupedCollection.IsSorted = true;
 		}
 
 		public async Task GroupOptionsUpdated(CancellationToken token)
