@@ -706,7 +706,7 @@ namespace Files.App.ViewModels
 
 			if (FilesAndFolders.GroupedCollection is null || FilesAndFolders.GroupedCollection.IsSorted)
 				return;
-			if (folderSettings.DirectorySortDirection == SortDirection.Ascending)
+			if (folderSettings.DirectoryGroupDirection == SortDirection.Ascending)
 			{
 				if (folderSettings.DirectoryGroupOption == GroupOption.Size)
 				{
