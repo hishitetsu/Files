@@ -43,6 +43,7 @@ namespace Files.App.ViewModels
 			ToggleLayoutModeAdaptiveCommand = new RelayCommand(ToggleLayoutModeAdaptive);
 
 			ChangeGroupOptionCommand = new RelayCommand<GroupOption>(ChangeGroupOption);
+			ChangeGroupDirectionCommand = new RelayCommand<SortDirection>(ChangeGroupDirection);
 		}
 		public FolderSettingsViewModel(FolderLayoutModes modeOverride) : this()
 			=> (rootLayoutMode, LayoutPreference.IsAdaptiveLayoutOverridden) = (modeOverride, true);
@@ -260,6 +261,8 @@ namespace Files.App.ViewModels
 			}
 		}
 
+		public ICommand ChangeGroupDirectionCommand { get; }
+
 		public SortDirection DirectoryGroupDirection
 		{
 			get => LayoutPreference.DirectoryGroupDirection;
@@ -392,7 +395,10 @@ namespace Files.App.ViewModels
 
 			if (folderPath == CommonPaths.DownloadsPath)
 				// Default for downloads folder is to group by date created
-				return new LayoutPreferences() { DirectoryGroupOption = GroupOption.DateCreated, DirectoryGroupDirection = SortDirection.Descending };
+				return new LayoutPreferences() {
+					DirectoryGroupOption = GroupOption.DateCreated,
+					DirectoryGroupDirection = SortDirection.Descending
+				};
 			else if (LibraryManager.IsLibraryPath(folderPath))
 				// Default for libraries is to group by folder path
 				return new LayoutPreferences() { DirectoryGroupOption = GroupOption.FolderPath };
@@ -514,6 +520,8 @@ namespace Files.App.ViewModels
 		}
 
 		private void ChangeGroupOption(GroupOption option) => DirectoryGroupOption = option;
+
+		private void ChangeGroupDirection(SortDirection option) => DirectoryGroupDirection = option;
 
 		public void OnDefaultPreferencesChanged(string folderPath, string settingsName)
 		{
