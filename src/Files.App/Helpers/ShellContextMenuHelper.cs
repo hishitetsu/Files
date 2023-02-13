@@ -275,8 +275,10 @@ namespace Files.App.Helpers
 										 .ForEach(x => x.MaxWidth = maxWidth); // Set items max width to current menu width (#5555)
 					}
 					
-					itemContextMenuFlyout.SecondaryCommands.Add(new AppBarSeparator());
 					secondaryElements.ForEach(i => itemContextMenuFlyout.SecondaryCommands.Add(i));
+
+					if (itemContextMenuFlyout.SecondaryCommands.FirstOrDefault(x => x is AppBarButton appBarButton && (appBarButton.Tag as string) == "ItemOverflow") is AppBarButton overflowItem)
+						overflowItem.Visibility = Visibility.Collapsed;
 				}
 				else
 				{
